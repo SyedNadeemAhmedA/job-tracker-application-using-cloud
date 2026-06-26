@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-briefcase"></i>
+                <h1>Job Tracker</h1>
+                <p>Track your application journey</p>
+            </div>
+            
+            <form onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        placeholder="Enter your username"
+                        autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        placeholder="Enter your password"
+                        autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            
+            <p class="login-hint">Demo: admin / admin123</p>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard-container" style="display: none;">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="brand">
+                    <i class="fas fa-briefcase"></i>
+                    <h1>Job Application Tracker</h1>
+                </div>
+                <button class="btn btn-secondary" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Stats Section -->
+            <section class="stats-section">
+                <h2 class="section-title">Your Progress</h2>
+                <div class="stats-grid">
+                    <div class="stat-card stat-total">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Total Applications</p>
+                            <p class="stat-value" id="total">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-interview">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Interviews Scheduled</p>
+                            <p class="stat-value" id="interviews">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-rejected">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Rejected</p>
+                            <p class="stat-value" id="rejected">0</p>
+                        </div>
+                    </div>
+
+                    <div class="stat-card stat-selected">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <p class="stat-label">Selected</p>
+                            <p class="stat-value" id="selected">0</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Application Section -->
+            <section class="form-section">
+                <h2 class="section-title">Add New Application</h2>
+                <form id="applicationForm" class="application-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="company">Company Name</label>
+                            <input 
+                                type="text" 
+                                id="company" 
+                                placeholder="e.g., Google, Microsoft"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Job Role</label>
+                            <input 
+                                type="text" 
+                                id="role" 
+                                placeholder="e.g., Frontend Developer"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Application Date</label>
+                            <input 
+                                type="date" 
+                                id="date" 
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status">
+                                <option value="Applied">Applied</option>
+                                <option value="Shortlisted">Shortlisted</option>
+                                <option value="Interview Scheduled">Interview Scheduled</option>
+                                <option value="Rejected">Rejected</option>
+                                <option value="Selected">Selected</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Application
+                    </button>
+                </form>
+            </section>
+
+            <!-- Analytics Section -->
+            <section class="analytics-section">
+                <h2 class="section-title">Application Analytics</h2>
+                <div class="chart-container">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Applications List Section -->
+            <section class="list-section">
+                <div class="list-header">
+                    <h2 class="section-title">Your Applications</h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input 
+                            type="text" 
+                            id="search" 
+                            placeholder="Search by company...">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Role</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationList">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
